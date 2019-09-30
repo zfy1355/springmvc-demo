@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration status="OFF">
+    <appenders>
+        <!--控制台日志-->
+        <Console name="Console" target="SYSTEM_OUT">
+            <PatternLayout pattern="%d{yyyy/MM/dd HH:mm:ss.SSS} [%t] %-5level  %logger{1.} - %msg%n"/>
+            <ThresholdFilter level="${log.console.level}" onMatch="ACCEPT" onMismatch="DENY"/>
+        </Console>
+        <!--错误日志-->
+        <RollingFile name="errorAppender" fileName="${log.base.path}/error.log"
+                     filePattern="${log.base.path}/error.log.%d{yyyy-MM-dd}">
+            <PatternLayout charset="UTF-8" pattern="%d{yyyy/MM/dd HH:mm:ss.SSS} [%t] %-5level  %logger{1.} - %msg%n"/>
+            <ThresholdFilter level="ERROR" onMatch="ACCEPT" onMismatch="DENY"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+        </RollingFile>
+        <!--所有日志-->
+        <RollingFile name="debugAppender" fileName="${log.base.path}/debug.log"
+                     filePattern="${log.base.path}/debug.log.%d{yyyy-MM-dd}">
+            <PatternLayout charset="UTF-8" pattern="%d{HH:mm:ss.SSS} [%t] %-5level  %logger{1.} - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+        </RollingFile>
+        <!--访问日志-->
+        <RollingFile name="visitAppender" fileName="${log.base.path}/visit.log"
+                     filePattern="${log.base.path}/visit.log.%d{yyyy-MM-dd}">
+            <PatternLayout charset="UTF-8" pattern="%d{yyyy/MM/dd HH:mm:ss.SSS} [%t] %-5level  %logger{1.} - %msg%n"/>
+            <Policies>
+                <TimeBasedTriggeringPolicy modulate="true" interval="1"/>
+            </Policies>
+        </RollingFile>
+    </appenders>
+    <loggers>
+         <!--HTTP访问日志-->
+        <logger name="RequestMonitor" level="${log.logger.level}" additivity="false">
+            <appender-ref ref="errorAppender"/>
+            <appender-ref ref="debugAppender"/>
+            <appender-ref ref="visitAppender"/>
+        </logger>
+
+        <root level="${log.root.level}">
+            <appender-ref ref="Console"/>
+            <appender-ref ref="errorAppender"/>
+            <appender-ref ref="debugAppender"/>
+        </root>
+    </loggers>
+</configuration>

@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>velocity demo</title>
+  </head>
+  <body>
+    #if($appName)
+    $appName
+    #else
+    no appName!  ~V~
+    #end
+  </body>
+</html>
